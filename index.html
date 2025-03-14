@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RetroSkeuo Walkman Demo</title>
+  <style>
+    /* RetroSkeuo CSS Library */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #1a1a1a url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAAXNSR0IArs4c6QAAACJJREFUCB1jYGBg+A/E/P8/Mf//g5nBAsDEwMTAxMAEzAQAaZUF8R8e1oMAAAAASUVORK5CYII=') repeat; /* Subtle noise texture */
+      color: #ccc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    /* Core Skeuomorphic Button Class */
+    .retro-button {
+      display: inline-block;
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: bold;
+      text-transform: uppercase;
+      text-align: center;
+      color: #fff;
+      background: linear-gradient(145deg, #4a4a4a, #2e2e2e);
+      border: 2px solid #1c1c1c;
+      border-radius: 8px;
+      box-shadow: 
+        4px 4px 8px rgba(0, 0, 0, 0.5),
+        inset 2px 2px 4px rgba(255, 255, 255, 0.2);
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+      cursor: pointer;
+      transition: all 0.1s ease;
+    }
+
+    .retro-button:active {
+      transform: translateY(2px);
+      box-shadow: 
+        2px 2px 4px rgba(0, 0, 0, 0.5),
+        inset 4px 4px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    .retro-button:hover {
+      background: linear-gradient(145deg, #5a5a5a, #3e3e3e);
+    }
+
+    /* Button Variants */
+    .retro-button.play { background: linear-gradient(145deg, #ff4444, #cc3333); }
+    .retro-button.stop { background: linear-gradient(145deg, #666, #444); }
+    .retro-button.ffwd { background: linear-gradient(145deg, #44ff44, #33cc33); }
+    .retro-button.rew { background: linear-gradient(145deg, #4444ff, #3333cc); }
+
+    /* Toggle Switch */
+    .retro-toggle {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 30px;
+      background: linear-gradient(145deg, #333, #222);
+      border: 2px solid #1c1c1c;
+      border-radius: 15px;
+      box-shadow: 
+        inset 2px 2px 4px rgba(0, 0, 0, 0.6),
+        inset -2px -2px 4px rgba(255, 255, 255, 0.1);
+      cursor: pointer;
+    }
+
+    .retro-toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .retro-toggle .slider {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 24px;
+      height: 24px;
+      background: linear-gradient(145deg, #ccc, #999);
+      border: 1px solid #666;
+      border-radius: 12px;
+      box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+      transition: 0.2s;
+    }
+
+    .retro-toggle input:checked + .slider {
+      transform: translateX(30px);
+      background: linear-gradient(145deg, #44ff44, #33cc33);
+    }
+
+    /* Device Container */
+    .retro-device {
+      background: linear-gradient(145deg, #555, #333);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.6);
+      border: 4px solid #222;
+      max-width: 450px;
+      width: 100%;
+      text-align: center;
+    }
+
+    /* LCD Display (Faux) */
+    .retro-display {
+      background: #1e2e1e;
+      color: #88ff88;
+      font-family: 'Courier New', monospace;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 4px;
+      box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.8);
+      text-align: left;
+    }
+
+    /* Control Layout */
+    .control-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .toggle-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 400px) {
+      .retro-device { padding: 20px; }
+      .retro-button { padding: 10px 16px; font-size: 14px; }
+      .control-row { flex-wrap: wrap; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="retro-device">
+    <h1 style="font-size: 24px; text-shadow: 1px 1px 2px #000; margin-bottom: 20px;">RetroSkeuo Walkman</h1>
+    
+    <!-- Faux LCD Display -->
+    <div class="retro-display">
+      Track: "Mixtape '95"<br>
+      00:42 / 03:15
+    </div>
+    
+    <!-- Playback Controls -->
+    <div class="control-row">
+      <button class="retro-button rew">Rew</button>
+      <button class="retro-button play">Play</button>
+      <button class="retro-button stop">Stop</button>
+      <button class="retro-button ffwd">Fwd</button>
+    </div>
+    
+    <!-- Power Toggle -->
+    <div class="toggle-row">
+      <label class="retro-toggle">
+        <input type="checkbox" checked>
+        <span class="slider"></span>
+      </label>
+      <span>Power</span>
+    </div>
+    
+    <!-- Footer Note -->
+    <p style="font-size: 12px; margin-top: 20px; color: #888;">
+      Built with RetroSkeuo CSS | 90s Vibes
+    </p>
+  </div>
+</body>
+</html>
